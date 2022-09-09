@@ -11,6 +11,7 @@
 #include "board_config.h"
 #include "gpio_ec.h"
 #include "periphmgmt.h"
+#include "led.h"
 #include "vrtt.h"
 
 LOG_MODULE_REGISTER(vrtt_test, CONFIG_PWRMGT_LOG_LEVEL);
@@ -30,9 +31,11 @@ void vrtt_test_handler(uint8_t vrtt_pressed)
 	if (slp_pins_state == false) {
 		gpio_write_pin(SLP_S3_N, 1);
 		gpio_write_pin(SLP_S4_N, 1);
+		led_blink(LED1, 1);
 	} else {
 		gpio_write_pin(SLP_S4_N, 0);
 		gpio_write_pin(SLP_S3_N, 0);
+		led_blink(LED1, 0);
 	}
 }
 
@@ -41,6 +44,9 @@ void vrtt_test_init(void)
 	int pin = gpio_read_pin(PM_SLP_SUS);
 
 	LOG_DBG("%s", __func__);
+
+	led_blink(LED1, 0);
+	led_blink(LED2, 0);
 
 	/* if SLP_SUS_N is 0 and we got here, then monitor for VRTT testing */
 	if (pin == 0) {

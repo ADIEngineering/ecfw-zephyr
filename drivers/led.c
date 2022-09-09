@@ -69,7 +69,6 @@ void led_blink(enum led_num idx, uint8_t duty_cycle)
 		pwm_multiplier = LED_PWM_FREQ_MULT;
 		break;
 	}
-
 	ret = pwm_pin_set_cycles(led_dev[idx], 0,
 			pwm_multiplier * MAX_DUTY_CYCLE,
 			pwm_multiplier * duty_cycle, 0);
@@ -81,6 +80,40 @@ void led_blink(enum led_num idx, uint8_t duty_cycle)
 
 void led_init(enum led_num idx)
 {
+#if defined(CONFIG_BOARD_MEC172X_AZBEACH)
+#if DT_NODE_HAS_STATUS(LED0, okay)
+	led_dev[LED0] = DEVICE_DT_GET(DT_PWMS_CTLR(LED0));
+	if (!device_is_ready(led_dev[LED0])) {
+		LOG_WRN("No LED device");
+	}
+#endif
+#if DT_NODE_HAS_STATUS(LED1, okay)
+	led_dev[LED1] = DEVICE_DT_GET(DT_PWMS_CTLR(LED1));
+	if (!device_is_ready(led_dev[LED1])) {
+		LOG_WRN("No LED device");
+	}
+#endif
+#if DT_NODE_HAS_STATUS(LED2, okay)
+	led_dev[LED2] = DEVICE_DT_GET(DT_PWMS_CTLR(LED2));
+	if (!device_is_ready(led_dev[LED2])) {
+		LOG_WRN("No LED device");
+	}
+#endif
+#if 0
+#if DT_NODE_HAS_STATUS(LED3, okay)
+	led_dev[LED3] = DEVICE_DT_GET(DT_CTLR(LED3));
+	if (!device_is_ready(led_dev[LED3])) {
+		LOG_WRN("No LED device");
+	}
+#endif
+#if DT_NODE_HAS_STATUS(LED4, okay)
+	led_dev[LED4] = DEVICE_DT_GET(DT_CTLR(LED4));
+	if (!device_is_ready(led_dev[LED4])) {
+		LOG_WRN("No LED device");
+	}
+#endif
+#endif
+#else
 	if (idx == LED2) {
 
 #if DT_NODE_HAS_STATUS(BAT_LED2, okay)
@@ -100,4 +133,5 @@ void led_init(enum led_num idx)
 			LOG_WRN("No KBD BKLT LED device");
 		}
 	}
+#endif
 }

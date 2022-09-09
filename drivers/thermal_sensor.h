@@ -16,7 +16,12 @@ enum adc_ch_num {
 	ADC_CH_05,
 	ADC_CH_06,
 	ADC_CH_07,
-
+#if defined(CONFIG_SOC_MEC172X_NLJ)
+	ADC_CH_08,
+	ADC_CH_09,
+	ADC_CH_10,
+	ADC_CH_11,
+#endif
 	ADC_CH_TOTAL
 };
 

@@ -11,7 +11,18 @@
 #define ONLY_OFF	0u
 
 enum led_num {
+	LED0,
+	LED1,
 	LED2,
+	LED3,
+	LED4,
+	LED5,
+	LED6,
+	LED7,
+	LED8,
+	LED9,
+	LED10,
+	LED11,
 	LED_KBD_BKLT,
 	LED_TOTAL,
 	LED_UNDEF = 0xFF,

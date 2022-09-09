@@ -41,6 +41,7 @@
 #ifdef CONFIG_DNX_SUPPORT
 #include "dnx.h"
 #endif
+#include "led.h"
 #include "vrtt.h"
 
 LOG_MODULE_REGISTER(pwrmgmt, CONFIG_PWRMGT_LOG_LEVEL);
@@ -341,6 +342,9 @@ static inline int pwrseq_task_init(void)
 #endif /* CONFIG_SOC_DEBUG_CONSENT_GPIO */
 #endif /* CONFIG_POWER_SEQUENCE_DISABLE_TIMEOUTS */
 
+	led_init(LED0);
+	led_blink(LED0, 75);
+
 	handle_spi_sharing(espihub_boot_mode());
 	gpio_write_pin(PM_PWRBTN, 1);
 
@@ -353,6 +357,8 @@ static inline int pwrseq_task_init(void)
 		pwrseq_error(ERR_RSMRST_PWRGD);
 		return ret;
 	}
+
+	led_blink(LED0,50);
 
 	if (espihub_boot_mode() == FLASH_BOOT_MODE_MAF) {
 		/* If the board is in MAF mode and the execution reached this
@@ -396,6 +402,8 @@ static inline int pwrseq_task_init(void)
 			return ret;
 		}
 	}
+
+	led_blink(LED0, 25);
 
 #ifdef CONFIG_DNX_SUPPORT
 	dnx_handle_early_handshake();

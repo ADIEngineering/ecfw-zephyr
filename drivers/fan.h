@@ -17,6 +17,11 @@ enum pwm_ch_num {
 	PWM_CH_06,
 	PWM_CH_07,
 	PWM_CH_08,
+#if defined(CONFIG_SOC_MEC172X_NLJ)
+	PWM_CH_09,
+	PWM_CH_10,
+	PWM_CH_11,
+#endif
 	PWM_CH_TOTAL,
 	PWM_CH_UNDEF = 0xFF,
 };

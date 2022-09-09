@@ -36,7 +36,11 @@ LOG_MODULE_REGISTER(fan, CONFIG_FAN_LOG_LEVEL);
 #define PWM_LABEL(x)		DT_LABEL(DT_PWM_INST(x))
 #define TACH_LABEL(x)		DT_LABEL(DT_TACH_INST(x))
 
+#if defined(CONFIG_SOC_MEC172x_NLJ)
+#define PWM_DEV_LIST_SIZE	(PWM_CH_11 + 1)
+#else
 #define	PWM_DEV_LIST_SIZE	(PWM_CH_08 + 1)
+#endif
 #define	TACH_DEV_LIST_SIZE	(TACH_CH_03 + 1)
 
 static const struct device *pwm_dev[PWM_DEV_LIST_SIZE];
@@ -77,6 +81,17 @@ static void init_pwm_devices(void)
 #endif
 #if DT_NODE_HAS_STATUS(DT_PWM_INST(8), okay)
 	pwm_dev[PWM_CH_08] = device_get_binding(PWM_LABEL(8));
+#endif
+#if defined(CONFIG_SOC_MEC172X_NLJ)
+#if DT_NODE_HAS_STATUS(DT_PWM_INST(9), okay)
+	pwm_dev[PWM_CH_09] = device_get_binding(PWM_LABEL(9));
+#endif
+#if DT_NODE_HAS_STATUS(DT_PWM_INST(10), okay)
+	pwm_dev[PWM_CH_10] = device_get_binding(PWM_LABEL(10));
+#endif
+#if DT_NODE_HAS_STATUS(DT_PWM_INST(11), okay)
+	pwm_dev[PWM_CH_11] = device_get_binding(PWM_LABEL(11));
+#endif
 #endif
 }
 

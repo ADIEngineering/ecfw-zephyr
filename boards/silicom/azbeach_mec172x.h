@@ -24,10 +24,12 @@ extern uint8_t platformskutype;
 #define PM_SLP_SUS			EC_GPIO_000
 #define RSMRST_PWRGD_G3SAF_P		EC_GPIO_012
 #define RSMRST_PWRGD_MAF_P		EC_GPIO_227
-
+#if 0
 #define RSMRST_PWRGD			((boot_mode_maf == 1) ? \
 					 RSMRST_PWRGD_MAF_P : \
 					 RSMRST_PWRGD_G3SAF_P)
+#endif
+#define RSMRST_PWRGD			RSMRST_PWRGD_MAF_P
 
 #define G3_SAF_DETECT			EC_GPIO_013
 #define CPU_C10_GATE			EC_GPIO_022
@@ -68,7 +70,7 @@ extern uint8_t platformskutype;
 
 #define PM_SLP_S0_CS			EC_GPIO_221
 #define PM_SLP_S0_EC_N			EC_GPIO_240		/* ADL-M */
-#define EC_PWRBTN_LED			EC_GPIO_014		/* FP Left Blue */
+#define EC_PWRBTN_LED			EC_GPIO_034		/* FP Ctr Green */
 
 #define EC_PG3_EXIT			EC_DUMMY_GPIO_LOW
 #define BC_ACOK				EC_DUMMY_GPIO_HIGH
@@ -102,6 +104,13 @@ extern uint8_t platformskutype;
 #define VIRTUAL_DOCK_INIT_POS		1
 #define VIRTUAL_BAT_INIT_POS		1
 #define BTN_RECESSED_INIT_POS		1
+
+/* PWM LEDs */
+#define LED0 				DT_ALIAS(led2)
+#define LED1				DT_ALIAS(led5)
+#define LED2				DT_ALIAS(led8)
+#define LED3				DT_ALIAS(led0)
+#define LED4				DT_ALIAS(led4)
 
 /* Minimum Adapter power(Milli Watts) for proceeding with boot */
 #define ADP_CRIT_POWERUP		26000

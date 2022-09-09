@@ -12,7 +12,7 @@
 
 / {
 	model = "Silicom Arizona Beach MEC172X EC";
-	compatible = "microchip,mec172x_azbeach", "microchip,mec172xnsz";
+	compatible = "microchip,mec172x_azbeach", "microchip,mec172xnlj";
 
 	chosen {
 		zephyr,sram = &sram0;
@@ -21,10 +21,10 @@
 	};
 
 	aliases {
-		led0 = &fp_red_left;	/* strictly for testing */
+		led0 = &fp_red_ctr;	/* strictly for testing */
 		led1 = &fp_green_left;
 		led2 = &fp_blue_left;
-		led3 = &fp_red_ctr;	/* strictly for testing */
+		led3 = &fp_red_left;	/* strictly for testing */
 		led4 = &fp_green_ctr;
 		led5 = &fp_blue_ctr;
 		led6 = &fp_red_right;
@@ -53,11 +53,11 @@
 			gpios = <&gpio_000_036 2 GPIO_ACTIVE_LOW>;
 			label = "FP GRN LT";
 		};
-		fp_blue_left: led_2 {
-			/* GPIO014/PWM6/SLV_SPI_IO1/GPTP_IN2 */
-			gpios = <&gpio_000_036 12 GPIO_ACTIVE_LOW>;
-			label = "FP BL LT";
-		};
+//		fp_blue_left: led_2 {
+//			/* GPIO014/PWM6/SLV_SPI_IO1/GPTP_IN2 */
+//			gpios = <&gpio_000_036 12 GPIO_ACTIVE_LOW>;
+//			label = "FP BL LT";
+//		};
 		fp_red_ctr: led_3 {
 			/* GPIO033/TACH3/RC_ID0 */
 			gpios = <&gpio_000_036 27 GPIO_ACTIVE_LOW>;
@@ -68,11 +68,11 @@
 			gpios = <&gpio_000_036 28 GPIO_ACTIVE_LOW>;
 			label = "FP GRN CTR";
 		};
-		fp_blue_ctr: led_5 {
-			/* GPIO133/PWM9 */
-			gpios = <&gpio_100_136 27 GPIO_ACTIVE_LOW>;
-			label = "FP BL CTR";
-		};
+//		fp_blue_ctr: led_5 {
+//			/* GPIO035/PWM8/CTOUT1/ICT15/LED3 */
+//			gpios = <&gpio_000_036 29 GPIO_ACTIVE_LOW>;
+//			label = "FP BL CTR";
+//		};
 		fp_red_right: led_6 {
 			/* GPIO156/LED0 */
 			gpios = <&gpio_140_176 14 GPIO_ACTIVE_LOW>;
@@ -83,11 +83,11 @@
 			gpios = <&gpio_040_076 6 GPIO_ACTIVE_LOW>;
 			label = "FP GRN RT";
 		};
-		fp_blue_right: led_8 {
-			/* GPIO047/KSO03/PWM3_ALT/ICT13/BCM1_CLK */
-			gpios = <&gpio_040_076 7 GPIO_ACTIVE_LOW>;
-			label = "FP BL RT";
-		};
+//		fp_blue_right: led_8 {
+//			/* GPIO047/KSO03/PWM3_ALT/ICT13/BCM1_CLK */
+//			gpios = <&gpio_040_076 7 GPIO_ACTIVE_LOW>;
+//			label = "FP BL RT";
+//		};
 		fp_amber_left: led_9 {
 			/* GPIO032/KSI7/GPTP_OUT0/UART0_RI# */
 			gpios = <&gpio_000_036 26 GPIO_ACTIVE_LOW>;
@@ -102,6 +102,21 @@
 			/* GPIO041 */
 			gpios = <&gpio_040_076 1 GPIO_ACTIVE_LOW>;
 			label = "FP AMB RT";
+		};
+	};
+	pwmleds {
+		compatible = "pwm-leds";
+		/* GPIO014/PWM6/SLV_SPI_IO1/GPTP_IN2 */
+		fp_blue_left: pwm_led_0 {
+			pwms = <&pwm6 0>;
+		};
+		/* GPIO035/PWM8/CTOUT1/ICT15/LED3 */
+		fp_blue_ctr: pwm_led_1 {
+			pwms = <&pwm8 0>;
+		};
+		/* GPIO47/KSO03/PWM3_ALT/ICT13/BCKM1_CLK */
+		fp_blue_right: pwm_led_2 {
+			pwms = <&pwm3 0>;
 		};
 	};
 	bgpo0: bgpo@4000ac9c {
@@ -144,6 +159,24 @@
 &pwm1 {
 	status = "okay";
 	pinctrl-0 = <&pwm1_gpio054>;
+	pinctrl-names = "default";
+};
+
+&pwm3 {
+	status = "okay";
+	pinctrl-0 = <&pwm3_alt_gpio047>;
+	pinctrl-names = "default";
+};
+
+&pwm6 {
+	status = "okay";
+	pinctrl-0 = <&pwm6_gpio014>;
+	pinctrl-names = "default";
+};
+
+&pwm8 {
+	status = "okay";
+	pinctrl-0 = <&pwm8_gpio035>;
 	pinctrl-names = "default";
 };
 

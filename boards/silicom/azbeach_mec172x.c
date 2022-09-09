@@ -149,7 +149,12 @@ int board_init(void)
 	/* In MAF, boot ROM already made this pin output and high, so we must
 	 * keep it like that during the boot phase in order to avoid espi reset
 	 */
-	if (espihub_boot_mode() == FLASH_BOOT_MODE_MAF) {
+	if (gpio_read_pin(PVT_SPI_BOOT) == 0) {
+		/* ensure no ESPI operations happen when in VTT testing mode */
+		espihub_set_boot_mode(FLASH_BOOT_MODE_OWN);
+
+		gpio_force_configure_pin(RSMRST_PWRGD_MAF_P, GPIO_INPUT | GPIO_PULL_UP);
+	} else if (espihub_boot_mode() == FLASH_BOOT_MODE_MAF) {
 		/* Ensure GPIO mode for pins reconfigure due to QMSPI device */
 		gpio_force_configure_pin(RSMRST_PWRGD_MAF_P,
 					 GPIO_INPUT | GPIO_PULL_UP);
@@ -157,11 +162,6 @@ int board_init(void)
 
 		/* LPM optimizations */
 		gpio_configure_pin(PM_RSMRST_G3SAF_P, GPIO_DISCONNECTED);
-	} else if (gpio_read_pin(PVT_SPI_BOOT) == 1) {
-		/* ensure no ESPI operations happen when in VTT testing mode */
-		espihub_set_boot_mode(FLASH_BOOT_MODE_OWN);
-
-		gpio_force_configure_pin(RSMRST_PWRGD_MAF_P, GPIO_INPUT | GPIO_PULL_UP);
 	} else {
 		gpio_configure_pin(PM_RSMRST_G3SAF_P, GPIO_OUTPUT_LOW);
 	}
