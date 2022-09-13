@@ -290,20 +290,21 @@
 	pinctrl-names = "default";
 };
 
+&bgp01_gpio101 {
+	output-high;
+}
+
 &pinctrl {
-	gpio000: gpio000 {
-		pinmux = < MCHP_XEC_PINMUX(0000, MCHP_AF0) >;
-	};
-	gpio101: gpio101 {
+	&bgpo1_gpio101 {
 		pinmux = < MCHP_XEC_PINMUX(0101, MCHP_AF0) >;
 	};
-	gpio102: gpio102 {
+	&bgp02_gpio102 {
 		pinmux = < MCHP_XEC_PINMUX(0102, MCHP_AF0) >;
 	};
-	gpio172: gpio172 {
+	&bgpo3_gpio172 {
 		pinmux = < MCHP_XEC_PINMUX(0172, MCHP_AF0) >;
 	};
-	gpio173: gpio173 {
+	&bgpo3_gpio173 {
 		pinmux = < MCHP_XEC_PINMUX(0173, MCHP_AF0) >;
 	};
 };
