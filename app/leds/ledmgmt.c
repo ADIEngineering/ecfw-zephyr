@@ -102,6 +102,13 @@ bool is_led_controlled_by_host(uint8_t idx)
 	return 1;
 }
 
+void host_update_led_ownership(uint8_t idx)
+{
+	if (idx < max_led_dev) {
+		led_tbl[idx].owned = 1;
+	}
+}
+
 void host_update_led_color(uint8_t idx, uint16_t greenblue, uint16_t red)
 {
 	if (!is_led_controlled_by_host(idx)) {
@@ -122,7 +129,7 @@ void host_update_led_color(uint8_t idx, uint16_t greenblue, uint16_t red)
 	}
 }
 
-void host_update_led_brightness(uint8_t idx, uint16_t brightness)
+void host_update_led_brightness(uint8_t idx, uint8_t brightness)
 {
 	if (!is_led_controlled_by_host(idx)) {
 		LOG_INF("LED %d is not in host control", idx);
@@ -182,15 +189,20 @@ static void manage_leds(void)
 				led_color_set(idx, color);
 				led_tbl[idx].update_color = 0;
 			}	
+#if 0
 			if (led_tbl[idx].update_brightness) {
 				led_brightness_set(idx, led_tbl[idx].brightness);
 				led_tbl[idx].update_brightness = 0;
 			}
+#endif
 			if (led_tbl[idx].update_blink) {
 				led_blink_set(idx, led_tbl[idx].on, led_tbl[idx].off);
 				led_tbl[idx].update_blink = 0;
 			}
 		}
+	}
+	for (uint8_t idx = 0; idx < max_led_dev; idx++) {
+		led_brightness_set(idx, led_tbl[idx].brightness);
 	}
 }
 
