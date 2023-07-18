@@ -30,6 +30,11 @@ static void update_led_peripherals_status(void)
 #endif
 }
 
+static void update_led_host_ownership(void)
+{
+	host_update_led_ownership(g_acpi_tbl.acpi_led_idx);
+}
+
 static void update_led_color(void)
 {
 	host_update_led_color(g_acpi_tbl.acpi_led_idx, g_acpi_tbl.acpi_led_val_l,
@@ -38,7 +43,10 @@ static void update_led_color(void)
 
 static void update_led_brightness(void)
 {
-	host_update_led_brightness(g_acpi_tbl.acpi_led_idx, g_acpi_tbl.acpi_led_val_l);
+	uint8_t *brightness = &g_acpi_tbl.acpi_led_brightness;
+
+	LOG_ERR("%s: called: 0x%x", __func__, (unsigned int)brightness[g_acpi_tbl.acpi_led_idx]);
+	host_update_led_brightness(g_acpi_tbl.acpi_led_idx, brightness[g_acpi_tbl.acpi_led_idx]);
 }
 
 static void update_led_blink(void)
@@ -66,6 +74,9 @@ void smchost_cmd_led_handler(uint8_t command)
 		break;
 	case SMCHOST_GET_LED_PERIPHERALS_STS:
 		update_led_peripherals_status();
+		break;
+	case SMCHOST_UPDATE_LED_SET_OWNER:
+		update_led_host_ownership();
 		break;
 	default:
 		LOG_WRN("%s: command 0x%X without handler", __func__, command);

@@ -17,6 +17,7 @@
 #include "pwrplane.h"
 #include "pwrbtnmgmt.h"
 #include "periphmgmt.h"
+#include "rstbutton.h"
 #include "espi_hub.h"
 #include "peci_hub.h"
 #ifdef CONFIG_BOARD_MEC172X_AZBEACH
@@ -308,6 +309,7 @@ static inline int smchost_task_init(void)
 
 	/* Register event handler */
 	pwrbtn_register_handler(smchost_pwrbtn_handler);
+	rstbtn_register_handler(smchost_rstbtn_handler);
 #ifndef CONFIG_BOARD_MEC172X_AZBEACH
 #ifdef EC_M_2_SSD_PLN
 	pwrbtn_register_handler(smchost_pwrbtn_pln_handler);
@@ -510,6 +512,8 @@ static void acpi_write_ec(void)
 			LOG_WRN("ACPI WR not permitted at offset: %02x",
 				acpi_idx);
 		}
+		if ((acpi_idx > 0xCA) && (acpi_idx < 0xCF))
+			LOG_ERR("ACPI ECW LED_L Data [%02x]: %02x", acpi_idx, data);
 	}
 }
 
@@ -682,6 +686,7 @@ static void smchost_cmd_handler(uint8_t command)
 	case SMCHOST_UPDATE_LED_COLOR:
 	case SMCHOST_UPDATE_LED_BRIGHTNESS:
 	case SMCHOST_UPDATE_LED_BLINK:
+	case SMCHOST_UPDATE_LED_SET_OWNER:
 		smchost_cmd_led_handler(command);
 		break;
 #endif
