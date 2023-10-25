@@ -10,7 +10,7 @@
 #include "flashhdr.h"
 
 #define KSC_PLAT_ID   1
-#define KSC_MAJOR_VER 2
+#define KSC_MAJOR_VER 3
 #define KSC_MINOR_VER 1
 #define KSC_BUILD_VER 0
 
